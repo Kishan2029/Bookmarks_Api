@@ -4,6 +4,7 @@ import { AppModule } from '../src/app.module';
 import { PrismaService } from '../src/prisma/prisma.service';
 import * as pactum from 'pactum';
 import { AuthDto } from 'src/auth/dto';
+import { EditUserDto } from 'src/user/dto';
 
 const backend_url = 'http://localhost:4444';
 describe('App e2e', () => {
@@ -99,6 +100,82 @@ describe('App e2e', () => {
       });
     });
   });
-  describe('User', () => {});
-  describe('Bookmark', () => {});
+  describe('User', () => {
+    describe('Get me', () => {
+      it('should get current user', () => {
+        return pactum
+          .spec()
+          .get('/users/me')
+          .withHeaders({
+            Authorization: 'Bearer $S{userAt}',
+          })
+          .expectStatus(200);
+      });
+    });
+    describe('Edit user', () => {
+      it('should edit user', () => {
+        const dto: EditUserDto = {
+          firstName: 'Vladimir',
+          email: 'vlad@codewithvlad.com',
+        };
+        return pactum
+          .spec()
+          .patch('/users')
+          .withHeaders({
+            Authorization: 'Bearer $S{userAt}',
+          })
+          .withBody(dto)
+          .expectStatus(200)
+          .expectBodyContains(dto.firstName)
+          .expectBodyContains(dto.email);
+      });
+    });
+  });
+  describe('Bookmark', () => {
+    it('Create bookmark', () => {
+      return pactum
+        .spec()
+        .get('/users/me')
+        .withHeaders({
+          Authorization: 'Bearer $S{userAt}',
+        })
+        .expectStatus(200);
+    });
+    it('Get bookmarks', () => {
+      return pactum
+        .spec()
+        .get('/users/me')
+        .withHeaders({
+          Authorization: 'Bearer $S{userAt}',
+        })
+        .expectStatus(200);
+    });
+    it('Get bookmark by id', () => {
+      return pactum
+        .spec()
+        .get('/users/me')
+        .withHeaders({
+          Authorization: 'Bearer $S{userAt}',
+        })
+        .expectStatus(200);
+    });
+    it('Edit bookmark by id', () => {
+      return pactum
+        .spec()
+        .get('/users/me')
+        .withHeaders({
+          Authorization: 'Bearer $S{userAt}',
+        })
+        .expectStatus(200);
+    });
+    it('Delete bookmark id', () => {
+      return pactum
+        .spec()
+        .get('/users/me')
+        .withHeaders({
+          Authorization: 'Bearer $S{userAt}',
+        })
+        .expectStatus(200);
+    });
+  });
 });
