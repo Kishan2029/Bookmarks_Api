@@ -11,14 +11,20 @@ export class BookmarkService {
         userId: userId,
       },
     });
-    console.log('bookmark', bookmarks);
+
     return bookmarks;
   }
 
   async getBookmarkById(userId: number, bookmarkId: number) {}
 
   async createBookmark(userId: number, dto: CreateBookmarkDto) {
-    // const bookmark = await this.prisma.bookmark.create();
+    const bookmark = await this.prisma.bookmark.create({
+      data: {
+        userId,
+        ...dto,
+      },
+    });
+    return bookmark;
   }
 
   async editBookmarkById(
